@@ -82,15 +82,10 @@ export(
 	"size",
 	"size.cqp_corpus",
 	"size.cqp_subcorpus"
-
-
 )
 
-# 	"cqi_charset",
-# 	"cqi_idlist2cpos",
-# 	"cqi_properties",
-
-importFrom(plyr,count)
+importFrom("plyr","count")
+importFrom("utils","write.table")
 
 S3method(cqp_flist,cqp_attr)
 S3method(cqp_flist,cqp_corpus)

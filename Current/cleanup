@@ -13,6 +13,7 @@
 # preparing the package for building from its source. 
 
 rm -f src/*.{o,so}
+rm -f libclcqp.a
 rm -f src/cwb/cl/*.{o,so}
 rm -f src/cwb/CQi/*.{o,so}
 rm -f src/cwb/cqp/*.{o,so}
