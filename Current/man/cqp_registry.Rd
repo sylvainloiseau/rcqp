@@ -1,5 +1,6 @@
 \name{cqp_registry}
 \alias{cqp_registry}
+\alias{cqi_getRegistry}
 \alias{cqi_setRegistry}
 
 \title{The CQP registry}
@@ -9,6 +10,7 @@ Setting the CQP registry for rcqp.
 }
 
 \usage{
+	cqi_getRegistry()
 	cqi_setRegistry(path)
 }
 
@@ -53,6 +55,14 @@ In order to set the \code{CORPUS_REGISTRY} variable, you can
 	
 	}
 }
+
+\value{
+	\code{cqi_getRegistry} returns a vector with the path of the registry
+	directory if it has been set, otherwise the NULL string.
+    \code{cqi_setRegistry} does not return anything.
+}
+
+
 
 \author{
 	Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr

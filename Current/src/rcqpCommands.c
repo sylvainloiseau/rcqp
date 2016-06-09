@@ -55,6 +55,32 @@ void rcqp_start_cwb()
 /* 
  * ------------------------------------------------------------------------
  * 
+ * "rcqpCmd_getRegistry()" --
+ * 
+ * 
+ * 
+ * ------------------------------------------------------------------------
+ */
+SEXP rcqpCmd_getRegistry()
+{
+	SEXP		result = R_NilValue;
+	char *		regStr;
+	
+	regStr = cl_standard_registry();
+	if (regStr != NULL) {
+		result = PROTECT(allocVector(STRSXP, 1));
+		SET_STRING_ELT(result, 0, mkChar(regStr));
+	} 
+	UNPROTECT(1);
+	
+	return result;
+}
+
+	
+
+/* 
+ * ------------------------------------------------------------------------
+ * 
  * "rcqpCmd_setRegistry(SEXP inPath)" --
  * 
  * 

@@ -32,7 +32,7 @@ R_init_rcqp(DllInfo * info)
 	envregdir = getenv("CORPUS_REGISTRY");
 	stdregdir= cl_standard_registry();
 	
-	if (envregdir == NULL) {
+	if (stdregdir == NULL) {
 		Rprintf("The registry directory is not defined.\n");
 		Rprintf("See ?cqi_setRegistry for more info on how to set the registry.\n");
 	} else {

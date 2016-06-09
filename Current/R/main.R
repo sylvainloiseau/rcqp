@@ -12,6 +12,22 @@
 ## 
  # ------------------------------------------------------------------------
  # 
+ # "cqi_getRegistry()" --
+ # 
+ # Example:
+ #		cqi_setRegistry()
+ # 
+ # ------------------------------------------------------------------------
+ ##
+cqi_getRegistry <- function(path) {
+	ans <- .Call("rcqpCmd_getRegistry", PACKAGE="rcqp")
+    return(ans)
+}
+
+
+## 
+ # ------------------------------------------------------------------------
+ # 
  # "cqi_setRegistry(path)" --
  # 
  # Example:
@@ -23,7 +39,6 @@ cqi_setRegistry <- function(path) {
 	.Call("rcqpCmd_setRegistry", path, PACKAGE="rcqp")
     return(invisible())
 }
-
 
 
 ## 
