@@ -137,11 +137,12 @@ cl_standard_registry()
 		regdir = getenv(REGISTRY_ENVVAR);
 	}
 	if (regdir == NULL) {
-		if( access( REGISTRY_DEFAULT_PATH, F_OK ) != -1 ) {
-			// File exists
-			regdir = REGISTRY_DEFAULT_PATH;
-		} 
+		regdir = REGISTRY_DEFAULT_PATH;
 	}
+	if (regdir != NULL && access(regdir, F_OK) == -1 ) {
+		// File does not exist
+		regdir = NULL;
+	} 
 	
 	return regdir;
 }

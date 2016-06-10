@@ -2,7 +2,7 @@ Package: rcqp
 Type: Package
 Title: Interface to the Corpus Query Protocol
 Version: 0.4
-Date: 2016-06-07
+Date: 2016-06-10
 Author: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>, Sylvain
         Loiseau <sylvain.loiseau@univ-paris13.fr>
 Maintainer: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>

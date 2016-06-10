@@ -1,7 +1,7 @@
 /* ===========================================================================
 * File: "rcqpCommands.c"
 *                        Created: 2012-01-13 18:49:02
-*              Last modification: 2016-06-09 14:03:30
+*              Last modification: 2016-06-10 15:12:43
 * Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 *          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 * Copyright (c) 2011-2016 
@@ -70,8 +70,8 @@ SEXP rcqpCmd_getRegistry()
 	if (regStr != NULL) {
 		result = PROTECT(allocVector(STRSXP, 1));
 		SET_STRING_ELT(result, 0, mkChar(regStr));
+		UNPROTECT(1);
 	} 
-	UNPROTECT(1);
 	
 	return result;
 }

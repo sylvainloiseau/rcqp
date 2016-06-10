@@ -19,7 +19,7 @@
  # 
  # ------------------------------------------------------------------------
  ##
-cqi_getRegistry <- function(path) {
+cqi_getRegistry <- function() {
 	ans <- .Call("rcqpCmd_getRegistry", PACKAGE="rcqp")
     return(ans)
 }

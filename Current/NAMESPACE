@@ -22,7 +22,6 @@ export(
 	"cqi_lexicon_size",
 	"cqi_list_corpora",
 	"cqi_list_subcorpora",
-#	"cqi_cqp",
 	"cqi_query",
 	"cqi_regex2id",
 	"cqi_str2id",

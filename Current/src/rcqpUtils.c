@@ -1,7 +1,7 @@
 /* ===========================================================================
 * File: "rcqpUtils.c"
 *                        Created: 2012-01-13 18:49:02
-*              Last modification: 2016-06-09 15:57:06
+*              Last modification: 2016-06-10 15:42:46
 * Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 *          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 * Copyright (c) 2011-2016 
@@ -27,17 +27,32 @@ int yydebug = 0;
 void
 R_init_rcqp(DllInfo * info)
 {
-	char		*envregdir, *stdregdir;
-	
-	envregdir = getenv("CORPUS_REGISTRY");
-	stdregdir= cl_standard_registry();
-	
+	char *	stdregdir = cl_standard_registry();	
 	if (stdregdir == NULL) {
-		Rprintf("The registry directory is not defined.\n");
-		Rprintf("See ?cqi_setRegistry for more info on how to set the registry.\n");
+		rcqp_print_R_message("The registry directory is not defined.");
+		rcqp_print_R_message("See ?cqi_setRegistry for more info on how to set the registry.");
 	} else {
 		rcqp_start_cwb();
 	}
+}
+
+
+/* 
+ * ------------------------------------------------------------------------
+ * 
+ * "rcqp_print_R_message()" --
+ * 
+ * This function invokes the R proc message() from the C code.
+ * 
+ * ------------------------------------------------------------------------
+ */
+void
+rcqp_print_R_message(char* inMsg)
+{
+	SEXP	expr;	
+	PROTECT(expr = lang2(install("message"), mkString(inMsg)));
+	eval(expr, R_GlobalEnv);
+	UNPROTECT(1);
 }
 
 
