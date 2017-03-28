@@ -1,0 +1,130 @@
+#! /bin/bash
+
+### ===========================================================================
+### File: "build_macosx_package"
+###                        Created: 2012-06-28 15:36:12
+###              Last modification: 2012-06-28 17:02:32
+### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+### This is part of the R package 'rcqp'.
+### ===========================================================================
+
+cd $(dirname $0)
+RCQP_SCRIPTS_DIR=`pwd`
+
+RCQP_MACOSX_GLIB_DEFAULT=/opt/local/lib/libglib-2.0.0.dylib
+RCQP_MACOSX_ICONV_DEFAULT=/opt/local/lib/libiconv.2.dylib
+RCQP_MACOSX_INTL_DEFAULT=/opt/local/lib/libintl.8.dylib
+RCQP_MACOSX_PCRE_DEFAULT=/usr/local/lib/libpcre.1.dylib
+RCQP_MACOSX_RLIBRARY_DEFAULT=~/Library/R/2.15/library/
+
+# The rcqpmacosxrc file can be used to define the following variables,
+# otherwise the defaults above are used:
+# 		RCQP_MACOSX_GLIB_PATH
+# 		RCQP_MACOSX_ICONV_PATH
+# 		RCQP_MACOSX_INTL_PATH
+# 		RCQP_MACOSX_PCRE_PATH
+# 		RCQP_MACOSX_RLIBRARY
+
+if [ -e ${RCQP_SCRIPTS_DIR}/rcqpmacosxrc ] ; then
+	echo "*** Sourcing '${RCQP_SCRIPTS_DIR}/rcqpmacosxrc' ..."
+	source ${RCQP_SCRIPTS_DIR}/rcqpmacosxrc
+else
+	echo "No file '${RCQP_SCRIPTS_DIR}/rcqpmacosxrc'. Using defaults."
+fi
+
+if [ -z $RCQP_MACOSX_PACKAGING_DIR ] ; then
+	RCQP_MACOSX_PACKAGING_DIR=${RCQP_SCRIPTS_DIR}/../../../Packaging
+	echo "RCQP_MACOSX_PACKAGING_DIR variable not defined. Using '$RCQP_MACOSX_PACKAGING_DIR'."
+fi
+
+if ! [ -e $RCQP_MACOSX_PACKAGING_DIR ] ; then
+	mkdir -p $RCQP_MACOSX_PACKAGING_DIR
+fi
+
+if [ -z $RCQP_MACOSX_RLIBRARY ] ; then
+	RCQP_MACOSX_RLIBRARY=$RCQP_MACOSX_RLIBRARY_DEFAULT
+	echo "RCQP_MACOSX_RLIBRARY variable not defined. Using '$RCQP_MACOSX_RLIBRARY'."
+fi
+
+if [ -z $RCQP_MACOSX_GLIB_PATH ] ; then
+	RCQP_MACOSX_GLIB_PATH=$RCQP_MACOSX_GLIB_DEFAULT
+fi
+
+if [ -z $RCQP_MACOSX_ICONV_PATH ] ; then
+	RCQP_MACOSX_ICONV_PATH=$RCQP_MACOSX_ICONV_DEFAULT
+fi
+
+if [ -z $RCQP_MACOSX_INTL_PATH ] ; then
+	RCQP_MACOSX_INTL_PATH=$RCQP_MACOSX_INTL_DEFAULT
+fi
+
+if [ -z $RCQP_MACOSX_PCRE_PATH ] ; then
+	RCQP_MACOSX_PCRE_PATH=$RCQP_MACOSX_PCRE_DEFAULT
+fi
+
+RCQP_MACOSX_GLIB_NAME=${RCQP_MACOSX_GLIB_PATH##*/}
+RCQP_MACOSX_ICONV_NAME=${RCQP_MACOSX_ICONV_PATH##*/}
+RCQP_MACOSX_INTL_NAME=${RCQP_MACOSX_INTL_PATH##*/}
+RCQP_MACOSX_PCRE_NAME=${RCQP_MACOSX_PCRE_PATH##*/}
+
+RCQP_MACOSX_RCQP_PKG=${RCQP_MACOSX_RLIBRARY}/rcqp
+RCQP_MACOSX_LIBS_DIR=$RCQP_MACOSX_PACKAGING_DIR/rcqp/libs/x86_64
+
+
+# Starting from an already installed rcqp package, built with "R CMD install"
+if ! [ -e $RCQP_MACOSX_RCQP_PKG ] ; then
+	echo "can't find rcqp package in R Library (${RCQP_MACOSX_RLIBRARY})"
+	exit 1
+fi
+
+
+# Copy the package in the Packaging directory
+cp -R $RCQP_MACOSX_RCQP_PKG $RCQP_MACOSX_PACKAGING_DIR
+
+
+# Copy the required libraries
+cp $RCQP_MACOSX_GLIB_PATH $RCQP_MACOSX_LIBS_DIR
+cp $RCQP_MACOSX_ICONV_PATH $RCQP_MACOSX_LIBS_DIR
+cp $RCQP_MACOSX_INTL_PATH $RCQP_MACOSX_LIBS_DIR
+cp $RCQP_MACOSX_PCRE_PATH $RCQP_MACOSX_LIBS_DIR
+
+
+# Rename the library paths
+cd $RCQP_MACOSX_LIBS_DIR
+
+# glib
+install_name_tool -id @loader_path/$RCQP_MACOSX_GLIB_NAME $RCQP_MACOSX_GLIB_NAME
+install_name_tool -change $RCQP_MACOSX_INTL_PATH @loader_path/$RCQP_MACOSX_INTL_NAME $RCQP_MACOSX_GLIB_NAME
+install_name_tool -change $RCQP_MACOSX_ICONV_PATH @loader_path/$RCQP_MACOSX_ICONV_NAME $RCQP_MACOSX_GLIB_NAME
+
+# libintl
+install_name_tool -id @loader_path/$RCQP_MACOSX_INTL_NAME $RCQP_MACOSX_INTL_NAME
+install_name_tool -change $RCQP_MACOSX_ICONV_PATH @loader_path/$RCQP_MACOSX_ICONV_NAME $RCQP_MACOSX_INTL_NAME
+
+# libiconv
+install_name_tool -id @loader_path/$RCQP_MACOSX_ICONV_NAME $RCQP_MACOSX_ICONV_NAME
+
+# libpcre
+install_name_tool -id @loader_path/$RCQP_MACOSX_PCRE_NAME $RCQP_MACOSX_PCRE_NAME
+
+# rcqp.so
+install_name_tool -change $RCQP_MACOSX_GLIB_PATH @loader_path/$RCQP_MACOSX_GLIB_NAME rcqp.so
+install_name_tool -change $RCQP_MACOSX_INTL_PATH @loader_path/$RCQP_MACOSX_INTL_NAME rcqp.so
+install_name_tool -change $RCQP_MACOSX_PCRE_PATH @loader_path/$RCQP_MACOSX_PCRE_NAME rcqp.so
+
+
+# # Move the rcqp package back
+# mv $RCQP_MACOSX_RCQP_PKG ${RCQP_MACOSX_RCQP_PKG}_orig
+# cp -R $RCQP_MACOSX_PACKAGING_DIR/rcqp ${RCQP_MACOSX_RLIBRARY}
+
+# Checking the result 
+otool -L *
+
+# Build a tar.gz archive
+cd $RCQP_MACOSX_PACKAGING_DIR
+tar czvf rcqp_macosx_0.1.tar.gz rcqp/*
+
+echo "*** Done." 
+
+
