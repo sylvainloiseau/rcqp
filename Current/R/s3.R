@@ -38,7 +38,7 @@ nregion <- function (attribute, ...) UseMethod("nregion");
 types <- function (attribute, ...) UseMethod("types");
 regions <- function (attribute, ...) UseMethod("regions");
 tokens <- function (attribute, ...) UseMethod("tokens");
-region_sizes <- function (attribute) UseMethod("tokens");
+region_sizes <- function (attribute) UseMethod("region_sizes");
 
 ###########################################################################
 # Matrix-like interface for accessing cqp object
