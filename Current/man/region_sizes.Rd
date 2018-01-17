@@ -44,6 +44,6 @@ An integer vector: for each region of this attribute, the number of tokens belon
 \examples{
 \dontrun{
 c <- corpus("DICKENS");
-s <- region_sizes(c$pos);
+region_sizes(c$novel);
 }
 }
