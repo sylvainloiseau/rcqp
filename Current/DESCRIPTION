@@ -13,7 +13,7 @@ Description: Implements Corpus Query Protocol functions based on the
         (LGPL).
 License: GPL-2 | file LICENCE
 LazyLoad: yes
-URL: http://www.r-project.org
+URL: https://www.r-project.org
 Collate: main.R zzz.R s3.R
 Encoding: latin1
 SystemRequirements: GNU make, pcre (>= 7), glib2 (>= 2)
